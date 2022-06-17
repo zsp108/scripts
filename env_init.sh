@@ -1,5 +1,9 @@
 #!/bin/bash
 
+env_sudo() {
+  echo ${LINUX_PASSWORD} | sudo -S $1
+}
+
 #修改$HOME/.bashrc文件
 init_bash(){
     cp $HOME/.bashrc $HOME/.bashrc_bak
@@ -30,11 +34,11 @@ EOF
 
 install_lib(){
     if [[ $OSNAME=='debian' ]];then
-        sudo apt-get update -y
-        sudo apt-get -y install make autoconf automake cmake libtool gcc zlib1g-dev tcl-dev git-lfs telnet ctags lrzsz jq openssl expat dh-autoreconf libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-dev libghc-zlib-dev libprotoc-dev
+        env_sudo "apt-get update -y"
+        env_sudo "apt-get -y install make autoconf automake cmake libtool gcc zlib1g-dev tcl-dev git-lfs telnet ctags lrzsz jq openssl expat dh-autoreconf libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-dev libghc-zlib-dev libprotoc-dev"
     elif [[ $OSNAME=='redhat' ]];then
-        sudo yum update -y
-        sudo yum -y install make autoconf automake cmake perl-CPAN libcurl-devel libtool gcc gcc-c++ glibc-headers zlib-devel git-lfs telnet ctags lrzsz jq expat-devel openssl-devel
+        env_sudo "yum update -y"
+        env_sudo "yum -y install make autoconf automake cmake perl-CPAN libcurl-devel libtool gcc gcc-c++ glibc-headers zlib-devel git-lfs telnet ctags lrzsz jq expat-devel openssl-devel"
     fi
 }
 
@@ -55,4 +59,3 @@ if [[ ! "$*" ]];then
     # init_bash
     install_lib
 fi
-
