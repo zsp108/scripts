@@ -1,11 +1,12 @@
 #!/bin/bash
 
-env_sudo() {
+#获取sudo 权限，
+function env::sudo() {
   echo ${LINUX_PASSWORD} | sudo -S $1
 }
 
 #修改$HOME/.bashrc文件
-init_bash(){
+function env::init::bashrc() {
     cp $HOME/.bashrc $HOME/.bashrc_bak
     tee -i $HOME/.bashrc << EOF
 # User specific aliases and functions
@@ -32,7 +33,7 @@ EOF
     ln -s /data/zsp/workspace $HOME/workspace
 }
 
-install_lib(){
+function env::lib::install() {
     if [[ $OSNAME=='debian' ]];then
         env_sudo "apt-get update -y"
         env_sudo "apt-get -y install make autoconf automake cmake libtool gcc zlib1g-dev tcl-dev git-lfs telnet ctags lrzsz jq openssl expat dh-autoreconf libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-dev libghc-zlib-dev libprotoc-dev"
@@ -42,7 +43,7 @@ install_lib(){
     fi
 }
 
-os_tpye(){
+function env::get::ostype() {
     declare -g OSNAME
     if [[ -f /etc/redhat-release ]];then
         OSNAME='redhat'
@@ -54,8 +55,8 @@ os_tpye(){
 }
 
 if [[ ! "$*" ]];then
-    os_tpye
+    env::get::ostype
     echo "$OSNAME"
-    # init_bash
-    install_lib
+    # env::init::bashrc
+    env::lib::install
 fi
