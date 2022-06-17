@@ -24,13 +24,16 @@ export PATH=$HOME/bin:$PATH # 将 $HOME/bin 目录加入到 PATH 变量中
 cd $WORKSPACE # 登录系统，默认进入 workspace 目录
 EOF
     #创建工作路径
-    mkdir -p $HOME/workspace
+    mkdir -p /data/zsp/workspace 
+    ln -s /data/zsp/workspace $HOME/workspace
 }
 
 install_lib(){
     if [[ $OSNAME=='debian' ]];then
+        sudo apt-get update -y
         sudo apt-get -y install make autoconf automake cmake libtool gcc zlib1g-dev tcl-dev git-lfs telnet ctags lrzsz jq openssl expat dh-autoreconf libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-dev libghc-zlib-dev libprotoc-dev
     elif [[ $OSNAME=='redhat' ]];then
+        sudo yum update -y
         sudo yum -y install make autoconf automake cmake perl-CPAN libcurl-devel libtool gcc gcc-c++ glibc-headers zlib-devel git-lfs telnet ctags lrzsz jq expat-devel openssl-devel
     fi
 }
@@ -49,8 +52,7 @@ os_tpye(){
 if [[ ! "$*" ]];then
     os_tpye
     echo "$OSNAME"
-    init_bash
+    # init_bash
+    install_lib
 fi
 
-# os_tpye
-# echo "$OSNAME"
