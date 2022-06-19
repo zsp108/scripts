@@ -59,6 +59,10 @@ if [ -f /etc/bashrc ]; then
     . /etc/bashrc
 fi
 
+if [ -f ~/.git-completion.bash ]; then
+        . ~/.git-completion.bash
+fi
+
 # User specific environment
 # Basic envs
 export LANG="en_US.UTF-8" # 设置系统语言为 en_US.UTF-8，避免终端出现中文乱码
@@ -102,6 +106,7 @@ function env::install::git(){
   ./configure
   make
   env::sudo "make install"
+  env::sudo "cp /tmp/git-2.36.1/contrib/completion/git-completion.bash $HOME/.git-completion.bash"
 
   cat << 'EOF' >> $HOME/.bashrc
 # Configure for git
@@ -166,11 +171,11 @@ echo "This OS is $OSNAME"
 
 if [[ ! "$*" ]];then
     #$HOME/.bashrc 配置文件修改
-    # env::init::bashrc
+    env::init::bashrc
     #安装所需要的依赖
     # env::install::lib
     #安装Git
-    env::install::git
+    # env::install::git
     #安装Go语言环境
     # env::install::go
 
