@@ -78,7 +78,7 @@ EOF
 
     #创建工作路径
     if [ ! -d $HOME/workspace ];then
-        mkdir -p /data/zsp/workspace 
+        mkdir -p $HOME/workspace 
         # ln -s /data/zsp/workspace $HOME/workspace
     fi
     source $HOME/.bashrc
