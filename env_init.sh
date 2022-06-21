@@ -79,7 +79,7 @@ EOF
     #创建工作路径
     if [ ! -d $HOME/workspace ];then
         mkdir -p /data/zsp/workspace 
-        ln -s /data/zsp/workspace $HOME/workspace
+        # ln -s /data/zsp/workspace $HOME/workspace
     fi
     source $HOME/.bashrc
     env::log::info "prepare linux successfully"
@@ -104,8 +104,8 @@ function env::install::git(){
   tar -xvzf git-2.36.1.tar.gz
   cd git-2.36.1/
   ./configure
-  make
-  env::sudo "make install"
+  make -j`nproc`
+  env::sudo "make install -j`nproc`"
   env::sudo "cp /tmp/git-2.36.1/contrib/completion/git-completion.bash $HOME/.git-completion.bash"
 
   cat << 'EOF' >> $HOME/.bashrc
