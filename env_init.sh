@@ -98,23 +98,28 @@ function env::install::lib() {
 
 #git 安装
 function env::install::git(){
-    rm -rf /tmp/git-2.36.1.tar.gz /tmp/git-2.36.1 # clean up
+    read -p "请输入需要安装的git版本(默认为2.36.1)：" git_v
+    if [ ! $git_v ];then
+        git_v=2.36.1
+    fi
+
+    rm -rf /tmp/git-$git_v.tar.gz /tmp/git-$git_v # clean up
   cd /tmp
-  wget --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.36.1.tar.gz
-  tar -xvzf git-2.36.1.tar.gz
-  cd git-2.36.1/
+  wget --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-$git_v.tar.gz
+  tar -xvzf git-$git_v.tar.gz
+  cd git-$git_v/
   ./configure
   make -j`nproc`
   env::sudo "make install -j`nproc`"
-  env::sudo "cp /tmp/git-2.36.1/contrib/completion/git-completion.bash $HOME/.git-completion.bash"
+  env::sudo "cp /tmp/git-$git_v/contrib/completion/git-completion.bash $HOME/.git-completion.bash"
 
   cat << 'EOF' >> $HOME/.bashrc
 # Configure for git
 export PATH=/usr/local/libexec/git-core:$PATH
 EOF
 
-  git --version | grep -q 'git version 2.36.1' || {
-    env::log::error "git version is not '2.36.1', maynot install git properly"
+  git --version | grep -q "git version $git_v" || {
+    env::log::error "git version is not '$git_v', maynot install git properly"
     return 1
   }
 
@@ -132,20 +137,26 @@ EOF
 
 #go 安装 复制 iam 项目脚本：https://github.com/marmotedu/iam/blob/master/scripts/install/install.sh
 function env::install::go(){
-    rm -rf /tmp/go1.18.3.linux-amd64.tar.gz $HOME/go/go1.18.3 # clean up
 
-  # 下载 go1.18.3 版本的 Go 安装包
-  wget -P /tmp/ https://golang.google.cn/dl/go1.18.3.linux-amd64.tar.gz
+    read -p "请输入需要安装的go版本(默认为1.18.3)：" go_version
+    if [ ! $go_version ];then
+        go_version=1.18.3
+    fi
+
+    rm -rf /tmp/go$go_version.linux-amd64.tar.gz $HOME/go/go$go_version # clean up
+
+  # 下载 go$go_version 版本的 Go 安装包
+  wget -P /tmp/ https://golang.google.cn/dl/go$go_version.linux-amd64.tar.gz
 
   # 安装 Go
   mkdir -p $HOME/go
-  tar -xvzf /tmp/go1.18.3.linux-amd64.tar.gz -C $HOME/go
-  mv $HOME/go/go $HOME/go/go1.18.3
+  tar -xvzf /tmp/go$go_version.linux-amd64.tar.gz -C $HOME/go
+  mv $HOME/go/go $HOME/go/go$go_version
 
   # 配置 Go 环境变量
   cat << 'EOF' >> $HOME/.bashrc
 # Go envs
-export GOVERSION=go1.18.3 # Go 版本设置
+export GOVERSION=go$go_version # Go 版本设置
 export GO_INSTALL_DIR=$HOME/go # Go 安装目录
 export GOROOT=$GO_INSTALL_DIR/$GOVERSION # GOROOT 设置
 export GOPATH=$WORKSPACE/golang # GOPATH 设置
