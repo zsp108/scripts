@@ -100,7 +100,7 @@ function env::install::lib() {
 function env::install::git(){
     read -p "请输入需要安装的git版本(默认为2.36.1)：" git_version
     if [ ! $git_version ];then
-        git_v=2.36.1
+        git_version=2.36.1
     fi
 
     rm -rf /tmp/git-$git_version.tar.gz /tmp/git-$git_version # clean up
@@ -197,6 +197,7 @@ function env::install::docker(){
 
 env::get::ostype
 env::log::info "This OS is $OSNAME"
+
 
 if [[ ! "$*" ]];then
     #$HOME/.bashrc 配置文件修改
