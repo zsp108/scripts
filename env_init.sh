@@ -175,23 +175,7 @@ EOF
 }
 
 
-function env::install::docker(){
-    if [[ $OSNAME=='debian' ]];then
-        env::sudo apt update && \
-        env::sudo apt install apt-transport-https ca-certificates curl gnupg-agent software-properties-common -y && \
-        env::sudo apt-get remove docker  docker.io containerd runc -y && \
-        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - && \
-        env::sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && \
-        env::sudo apt update -y && \
-        env::sudo apt install docker-ce docker-ce-cli containerd.io -y
-    elif [[ $OSNAME=='redhat' ]];then
-        env::sudo yum install -y yum-utils device-mapper-persistent-data lvm2
-        env::sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
-        env::sudo yum install docker-ce-18.03.1.ce-1.el7.centos
-        systemctl restart docker
-    fi
-    
-}
+
 
 
 
