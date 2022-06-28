@@ -98,28 +98,28 @@ function env::install::lib() {
 
 #git 安装
 function env::install::git(){
-    read -p "请输入需要安装的git版本(默认为2.36.1)：" git_v
-    if [ ! $git_v ];then
+    read -p "请输入需要安装的git版本(默认为2.36.1)：" git_version
+    if [ ! $git_version ];then
         git_v=2.36.1
     fi
 
-    rm -rf /tmp/git-$git_v.tar.gz /tmp/git-$git_v # clean up
+    rm -rf /tmp/git-$git_version.tar.gz /tmp/git-$git_version # clean up
   cd /tmp
-  wget --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-$git_v.tar.gz
-  tar -xvzf git-$git_v.tar.gz
-  cd git-$git_v/
+  wget --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-$git_version.tar.gz
+  tar -xvzf git-$git_version.tar.gz
+  cd git-$git_version/
   ./configure
   make -j`nproc`
   env::sudo "make install -j`nproc`"
-  env::sudo "cp /tmp/git-$git_v/contrib/completion/git-completion.bash $HOME/.git-completion.bash"
+  env::sudo "cp /tmp/git-$git_version/contrib/completion/git-completion.bash $HOME/.git-completion.bash"
 
   cat << 'EOF' >> $HOME/.bashrc
 # Configure for git
 export PATH=/usr/local/libexec/git-core:$PATH
 EOF
 
-  git --version | grep -q "git version $git_v" || {
-    env::log::error "git version is not '$git_v', maynot install git properly"
+  git --version | grep -q "git version $git_version" || {
+    env::log::error "git version is not '$git_version', maynot install git properly"
     return 1
   }
 
@@ -204,9 +204,9 @@ if [[ ! "$*" ]];then
     #安装所需要的依赖
     env::install::lib
     #安装Git
-    env::install::git
+    # env::install::git
     #安装Go语言环境
-    env::install::go
+    # env::install::go
 else 
     env::log::info "run $*"
     $*
