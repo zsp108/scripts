@@ -87,10 +87,10 @@ EOF
 
 # Go环境搭建依赖安装
 function env::install::lib() {
-    if [[ $OSNAME=='debian' ]];then
+    if [[ "$OSNAME" == 'debian' ]];then
         env::sudo "apt-get update -y"
         env::sudo "apt-get -y install make autoconf automake cmake libtool gcc zlib1g-dev tcl-dev git-lfs telnet ctags lrzsz jq openssl expat dh-autoreconf libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-dev libghc-zlib-dev libprotoc-dev"
-    elif [[ $OSNAME=='redhat' ]];then
+    elif [[ "$OSNAME" == 'redhat' ]];then
         env::sudo "yum update -y"
         env::sudo "yum -y install make autoconf automake cmake perl-CPAN libcurl-devel libtool gcc gcc-c++ glibc-headers zlib-devel git-lfs telnet ctags lrzsz jq expat-devel openssl-devel"
     fi
